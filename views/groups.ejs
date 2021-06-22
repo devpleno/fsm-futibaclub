@@ -1,0 +1,94 @@
+<%- include('elements/header') %>
+
+    <nav class="navbar navbar-expand-lg navbar-light green fixed-top scrolling-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img-futiba-club/logo.png" height="30" alt="Futiba Club">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7"
+                aria-controls="navbarSupportedContent-7" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-7">
+                <%- include('elements/menu-items') %>
+            </div>
+        </div>
+    </nav>
+    </header>
+
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <h2>Gerenciamento de Grupos</h2>
+            </div>
+            <form class="row" method="POST">
+                <div class="col-6 md-form">
+                    <i class="fa fa-user prefix grey-text"></i>
+                    <input type="text" id="form3" class="form-control" name="name">
+                    <label for="form3">Nome do Grupo</label>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-success">Criar Grupo <i class="fa fa-check-circle ml-1"></i></button>
+                </div>
+            </form>
+        </div>
+        <% if(groups.length> 0) { %>
+            <div class="container">
+                <h2>Listagem dos Grupos</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Grupo</th>
+                            <th></th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% groups.forEach( group=> { %>
+                            <tr>
+                                <th scope="row">
+                                    <%= group.id %>
+                                </th>
+                                <td>
+                                    <% if(group.role && group.role !=='pending' ) { %>
+                                        <a href="/groups/<%= group.id %>">
+                                            <% } %>
+                                                <%= group.name %>
+                                        </a>
+                                </td>
+                                <td>
+                                    <% if(group.role==='owner' ){ %>
+                                        Fundador
+                                        <% } else { %>
+                                            <!-- <%= group.role %> -->
+                                            Usuário
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <% if(group.role==='owner' ) { %>
+                                        <a href="/admin/groups/delete/<%= group.id %>"><i class="fa fa-trash"></i>
+                                            Excluir Grupo</a>
+                                        <% } %>
+
+                                            <% if(group.role==='pending' ) { %>
+                                                <i class="fa fa-hourglass"></i> Solicitação Pendente
+                                                <% } %>
+
+                                                    <% if(!group.role) { %>
+                                                        <a href="/groups/<%= group.id %>/join">Solicitar Entrada</a>
+                                                        <% } %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <% } else { %>
+                <div class="container">
+                    <p class="alert alert-info">Nenhum Grupo Cadastrado.</p>
+                </div>
+                <% } %>
+    </section>
+
+    <%- include('elements/footer') %>

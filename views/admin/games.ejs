@@ -1,0 +1,94 @@
+<%- include('../elements/header') %>
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-light green fixed-top scrolling-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img-futiba-club/logo.png" height="30" alt="Futiba Club">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7"
+                aria-controls="navbarSupportedContent-7" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-7">
+                <%- include('../elements/menu-items') %>
+            </div>
+        </div>
+    </nav>
+    </header>
+
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <h2>Gerenciamento de Jogos</h2>
+            </div>
+            <form class="row" method="POST">
+                <div class="md-form">
+                    <i class="fa fa-user prefix grey-text"></i>
+                    <input type="text" id="form3" class="form-control" name="team_a">
+                    <label for="form3">Time A</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-user prefix grey-text"></i>
+                    <input type="text" id="form2" class="form-control" name="team_b">
+                    <label for="form2">Time B</label>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-deep-orange">Criar Jogo <i class="fa fa-paper-plane-o ml-1"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="container">
+            <h2>Resultados Finais</h2>
+            <form method="POST" action="/admin/games/results">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jogos</th>
+                            <th>Status</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% games.forEach( game=> { %>
+                            <tr>
+                                <th scope="row">
+                                    <%= game.id %>
+                                </th>
+                                <td>
+                                    <% if(game.result_a) { %>
+                                        <strong>
+                                            <%= game.result_a %>
+                                        </strong>
+                                        <% } else { %>
+                                            <input name="team_<%= game.id %>[a]">
+                                            <% } %>
+                                                <%= game.team_a %> <strong>VS</strong>
+                                                    <%= game.team_b %>
+                                                        <% if(game.result_b) { %>
+                                                            <strong>
+                                                                <%= game.result_b %>
+                                                            </strong>
+                                                            <% } else { %>
+                                                                <input name="team_<%= game.id %>[b]">
+                                                                <% } %>
+                                </td>
+                                <td>
+                                    <% if(!game.result_a || !game.result_b) { %>
+                                        <strong>Jogo Rolando...</strong>
+                                        <% } else { %>
+                                            <strong>Jogo Encerrado</strong>
+                                            <% } %>
+                                </td>
+                                <td> <a href="/admin/games/delete/<%= game.id %>"><i class="fa fa-trash"></i> Excluir
+                                        Jogo</a></td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <input type="submit" value="Salvar Resultados" class="btn btn-primary">
+            </form>
+        </div>
+    </section>
+
+    <%- include('../elements/footer') %>
